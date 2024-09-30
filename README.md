@@ -53,3 +53,4 @@ This project is an Angular-based entertainment web application that allows users
   2. Integrate the Angular app with the backend using Angular’s HttpClient.
   3. Add authentication to manage user login and bookmarks.
 ### Hosting Link
+    https://movies-app-in-angular.vercel.app/login
