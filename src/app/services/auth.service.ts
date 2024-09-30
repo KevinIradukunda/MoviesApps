@@ -5,18 +5,16 @@ import { BehaviorSubject } from 'rxjs';
 import { FilmsService } from './films.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   userData: any;
-   errorMessage = new BehaviorSubject<string> ('')
+  errorMessage = new BehaviorSubject<string>('');
   constructor(
-
-    public afAuth: AngularFireAuth, 
+    public afAuth: AngularFireAuth,
     public router: Router,
     private filmService: FilmsService
   ) {
-    
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
@@ -28,50 +26,50 @@ export class AuthService {
       }
     });
   }
-    signIn(email: string, password: string) {
-      return this.afAuth
-        .signInWithEmailAndPassword(email, password)
-        .then((result) => {
-          this.afAuth.authState.subscribe((user) => {
-            console.log(user)
-            if (user) {
-              this.router.navigate(['']);
-            }
-          });
-        })
-        .catch((error) => {
-          this.errorMessage.next(error.message)
+  signIn(email: string, password: string) {
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.afAuth.authState.subscribe((user) => {
+          console.log(user);
+          if (user) {
+            this.router.navigate(['']);
+          }
         });
-    }
-    signUp(email: string, password: string) {
-      return this.afAuth
-        .createUserWithEmailAndPassword(email, password)
-        .then((result) => {
-          this.afAuth.authState.subscribe((user) => {
-            console.log(user)
-            if (user) {
-              this.router.navigate(['']);
-            }
-          });
-          this.filmService.createFilmsList(email)
-        })
-        .catch((error) => {
-          this.errorMessage.next(error.message)
+      })
+      .catch((error) => {
+        this.errorMessage.next(error.message);
+      });
+  }
+  signUp(email: string, password: string) {
+    return this.afAuth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.afAuth.authState.subscribe((user) => {
+          console.log(user);
+          if (user) {
+            this.router.navigate(['/login']);
+          }
         });
-    }
-    getErrorMessage() {
-      return this.errorMessage.asObservable()
-    }
+        this.filmService.createFilmsList(email);
+      })
+      .catch((error) => {
+        this.errorMessage.next(error.message);
+      });
+  }
+  getErrorMessage() {
+    return this.errorMessage.asObservable();
+  }
 
-    logout() {
-      this.afAuth.signOut()
-        .then(() => {
-          localStorage.removeItem('user');
-          this.router.navigate(['/login']);
-        })
-        .catch(error => {
-       
-          console.error('Error logging out:', error);
-        });
-    }
+  logout() {
+    this.afAuth
+      .signOut()
+      .then(() => {
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  }
 }
