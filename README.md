@@ -26,7 +26,7 @@ This project is an Angular-based entertainment web application that allows users
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/<your-repo-name>.git
+   git clone https://github.com/KevinIradukunda/MoviesApps
 2. Navigate to the project directory:
    ```bash
    cd Moviesapp
